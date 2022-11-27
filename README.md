@@ -1,1 +1,5 @@
 # ScalaPluginTemplate
+## Compiling
+```sbt
+> assembly
+```
