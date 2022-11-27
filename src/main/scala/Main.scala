@@ -18,8 +18,10 @@ class Main extends Plugin :
     Log.info("Hello from @!", this.getClass.getName)
 
     Events.on(classOf[EventType.BuildSelectEvent], (event: EventType.BuildSelectEvent) => {
-      if (!event.breaking && event.builder != null && event.builder.buildPlan != null && (event.builder.buildPlan.block eq Blocks.thoriumReactor) && event.builder.isPlayer) { //player is the unit controller
+      if (!event.breaking && event.builder != null && event.builder.buildPlan != null && (event.builder.buildPlan.block eq Blocks.thoriumReactor) && event.builder.isPlayer) {
+        // Player is the unit controller
         val player = event.builder.getPlayer
+
         // Send a message to everyone saying that this player has begun building a reactor
         Call.sendMessage("[scarlet]ALERT![] " + player.name + " has begun building a reactor at " + event.tile.x + ", " + event.tile.y)
       }
@@ -27,7 +29,7 @@ class Main extends Plugin :
 
     // Add a chat filter that changes the contents of all messages
     // In this case, all instances of "heck" are censored
-    Vars.netServer.admins.addChatFilter((player: Player, text: String) => text.replace("heck", "h*ck"))
+    Vars.netServer.admins.addChatFilter((_: Player, text: String) => text.replace("heck", "h*ck"))
 
     // Add an action filter for preventing players from doing certain things
     Vars.netServer.admins.addActionFilter((action: Administration.PlayerAction) => {
@@ -41,7 +43,7 @@ class Main extends Plugin :
 
   // Register commands that run on the server
   override def registerServerCommands(handler: CommandHandler): Unit = {
-    handler.register("reactors", "List all thorium reactors in the map.", (args: Array[String]) => {
+    handler.register("reactors", "List all thorium reactors in the map.", (_: Array[String]) => {
       for (x <- 0 until Vars.world.width) {
         for (y <- 0 until Vars.world.height) {
           // Loop through and log all found reactors
@@ -62,7 +64,7 @@ class Main extends Plugin :
 
     // Register a whisper command which can be used to send other players messages
     handler.register[Player]("whisper", "<player> <text...>", "Whisper text to another player.", (args, player) => {
-      val other = Groups.player.find((p: Player) => p.name.equalsIgnoreCase(args(0)))
+      val other = Groups.player.find((player: Player) => player.name.equalsIgnoreCase(args(0)))
 
       // Give error message with scarlet-colored text if player isn't found
       if (other == null) {
