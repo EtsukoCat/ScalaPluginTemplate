@@ -39,7 +39,7 @@ class Main extends Plugin :
     })
   }
 
-  // Register commands that run on the server//register commands that run on the server
+  // Register commands that run on the server
   override def registerServerCommands(handler: CommandHandler): Unit = {
     handler.register("reactors", "List all thorium reactors in the map.", (args: Array[String]) => {
       for (x <- 0 until Vars.world.width) {
